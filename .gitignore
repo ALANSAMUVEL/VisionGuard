@@ -1,0 +1,30 @@
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Secrets
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Runtime data
+logs/
+profiles/
+sessions/
+reports/
+data/
+
+# Generated files
+*.log
+*.db
+*.sqlite
+*.sqlite3

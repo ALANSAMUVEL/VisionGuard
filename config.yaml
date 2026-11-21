@@ -1,0 +1,74 @@
+# VisionGuard Configuration (config.yaml)
+# Central configuration for camera, signal processing, scoring, FSM, and storage.
+
+# ── Camera ────────────────────────────────────────────────────────────────────
+camera:
+  index: 0                      # Camera device index (0 = default webcam)
+  width: 640
+  height: 480
+  fps: 30
+  backend_windows: true         # Use DirectShow (CAP_DSHOW) on Windows for fast init
+
+# ── Signal Processing ─────────────────────────────────────────────────────────
+processing:
+  ema_alpha: 0.15               # Exponential Moving Average factor (0-1). Higher = reacts faster.
+  window_seconds: 4.0           # Sliding window duration in seconds for temporal metrics
+
+# ── Face Quality & Confidence Assessment ──────────────────────────────────────
+face_quality:
+  blur_threshold: 20.0          # Below this variance produces a soft confidence penalty
+  min_brightness: 30.0          # Below this produces a soft confidence penalty
+  max_brightness: 235.0         # Above this produces an overexposure confidence penalty
+  min_face_area_ratio: 0.015    # Face bounding box must cover at least 1.5% of frame
+  max_face_area_ratio: 0.95     # Face bounding box upper limit guard
+  min_landmark_spread: 0.004    # Sanity guard against collapsed landmarks
+
+# ── Calibration ───────────────────────────────────────────────────────────────
+calibration:
+  duration_seconds: 45.0        # Duration in seconds for baseline gathering (45-60s)
+
+# ── Threshold Generation Margins ──────────────────────────────────────────────
+threshold_margins:
+  ear_closed_std_multiplier: 1.5   # Closed threshold = mean_ear - (multiplier * std_ear)
+  long_eye_closure_multiplier: 2.0 # Microsleep threshold = multiplier * avg_blink_duration
+  blink_warning_multiplier: 1.8    # Slow blink threshold = multiplier * avg_blink_duration
+  mar_margin: 0.20                 # Yawn threshold = neutral_mar + margin
+  head_pose_margin_degrees: 15.0   # Head pose boundary = neutral_angle ± margin (degrees)
+
+# ── Rule-Based Fatigue Scoring Weights (must sum to 1.0) ──────────────────────
+fatigue_weights:
+  eye_closure: 0.40             # Continuous eye closure duration (Microsleep detection)
+  perclos: 0.25                 # Percentage of eye closure over window (Sustained drowsiness)
+  blink_behaviour: 0.15         # Prolonged average blink duration
+  yawning: 0.10                 # Confirmed yawn events (ignoring talking with open eyes)
+  head_pose: 0.10               # Head drooping (pitch), tilting (roll), looking away (yaw)
+
+# ── Finite State Machine (FSM) ────────────────────────────────────────────────
+fsm:
+  thresholds:
+    mild: 35                    # Score >= 35 qualifies for MILD
+    drowsy: 60                  # Score >= 60 qualifies for DROWSY
+    critical: 80                # Score >= 80 qualifies for CRITICAL
+  timers:
+    to_mild: 3.0                # Seconds score must remain in MILD range
+    to_drowsy: 3.0              # Seconds score must remain in DROWSY range
+    to_critical: 2.0            # Seconds score must remain in CRITICAL range (rapid escalation)
+    recovery: 5.0               # Seconds score must remain low before de-escalating
+
+# ── Audio Alerts ──────────────────────────────────────────────────────────────
+alerts:
+  mild_sound: "assets/mild_alert.wav"
+  drowsy_sound: "assets/drowsy_alert.wav"
+  critical_sound: "assets/critical_alert.wav"
+
+# ── Storage & Output ──────────────────────────────────────────────────────────
+storage:
+  profiles_dir: "profiles"      # Personalized driver profiles (JSON)
+  sessions_dir: "sessions"      # Telemetry logs (CSV)
+  reports_dir: "reports"        # End-of-session analytical reports (PDF)
+  csv_flush_rows: 30            # Number of records to buffer before disk write
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+logging:
+  level: "INFO"                 # DEBUG, INFO, WARNING, ERROR
+  log_file: "logs/apdms.log"
