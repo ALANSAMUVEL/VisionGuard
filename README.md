@@ -2,7 +2,6 @@
 ### Adaptive Personalized Driver Monitoring System
 
 [![Python Version](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-26%20passed-brightgreen.svg)]()
 
 **VisionGuard** is a real-time, deterministic computer vision system designed to monitor driver drowsiness, distraction, and fatigue. Unlike fragile black-box end-to-end deep learning models, VisionGuard operates on an **adaptive, rule-based signal processing pipeline** with **personalized driver calibration**, a temporal **Finite State Machine (FSM)** with hysteresis, and comprehensive **session reporting**.
