@@ -145,7 +145,7 @@ VisionGuard/
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/VisionGuard.git
+   git clone https://github.com/ALANSAMUVEL/VisionGuard.git
    cd VisionGuard
    ```
 
@@ -153,7 +153,7 @@ VisionGuard/
    ```bash
    python -m venv venv
    # On Windows:
-   venv\Scripts\activate
+   venv\Scripts\Activate.ps1
    # On macOS/Linux:
    source venv/bin/activate
    ```
@@ -179,12 +179,12 @@ run.bat
 
 ### 2. Specify Driver Name Directly
 ```bash
-python main.py --driver Alice
+python main.py --driver user1
 ```
 
 ### 3. Force Recalibration
 ```bash
-python main.py --driver Alice --recalibrate
+python main.py --driver user1 --recalibrate
 ```
 
 ### 4. Select Camera Device Index
@@ -235,7 +235,3 @@ All 26 test cases validate:
 | `fsm.timers` | `recovery` | `5.0` | Sustained low-score time to return to ALERT |
 
 ---
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
